@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  tunnelserver:
+    build:
+      context: .
+    container_name: "tunnelserver"
+    network_mode: "host"
+    command: "--port ${MANAGER_PORT} --domain ${DOMAIN} --secure ${SECURE}"
+    restart: "always"
