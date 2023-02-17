@@ -3,9 +3,9 @@ FROM node:10.1.0-alpine
 WORKDIR /app
 
 COPY package.json /app/
-COPY yarn.lock /app/
+COPY package-lock.json /app/
 
-RUN yarn install --production && yarn cache clean
+RUN npm install --production && npm cache clean
 
 COPY . /app
 
