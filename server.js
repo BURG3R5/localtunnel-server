@@ -30,8 +30,10 @@ export default function (opt) {
 
   router.get("/api/status", async (ctx, next) => {
     const stats = manager.stats;
+
     ctx.body = {
-      tunnels: stats.tunnels,
+      idsUsed: stats.idsUsed,
+      portsEngaged: stats.portsEngaged,
       mem: process.memoryUsage(),
     };
   });
