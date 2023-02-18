@@ -6,6 +6,7 @@ services:
       context: .
     environment:
       - DEBUG=*
+      - NODE_ENV=production
     container_name: "tunnelserver"
     network_mode: "host"
     command: "--config config.json"
