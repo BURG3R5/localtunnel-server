@@ -1,9 +1,8 @@
-import log from "book";
 import Koa from "koa";
 import tldjs from "tldjs";
 import Debug from "debug";
 import http from "http";
-import { hri } from "human-readable-ids";
+import {hri} from "human-readable-ids";
 import Router from "koa-router";
 
 import ClientManager from "./lib/ClientManager";
@@ -28,7 +27,7 @@ export default function (opt) {
   const app = new Koa();
   const router = new Router();
 
-  router.get("/api/status", async (ctx, next) => {
+  router.get("/api/status", async (ctx, _) => {
     const stats = manager.stats;
 
     ctx.body = {
@@ -38,7 +37,7 @@ export default function (opt) {
     };
   });
 
-  router.get("/api/tunnels/:id/status", async (ctx, next) => {
+  router.get("/api/tunnels/:id/status", async (ctx, _) => {
     const clientId = ctx.params.id;
     const client = manager.getClient(clientId);
     if (!client) {
@@ -69,12 +68,17 @@ export default function (opt) {
     if (isNewClientRequest) {
       const reqId = hri.random();
       debug("making new client with id %s", reqId);
-      const info = await manager.newClient(reqId);
+      try {
+        const info = await manager.newClient(reqId);
 
-      const url = schema + "://" + info.id + "." + ctx.request.host;
-      info.url = url;
-      ctx.body = info;
-      return;
+        info.url = schema + "://" + info.id + "." + ctx.request.host;
+        ctx.body = info;
+        return;
+      } catch (err) {
+        ctx.status = 503;
+        ctx.body = {message: "Server capacity has been reached; Try again later"};
+        return;
+      }
     }
 
     // no new client request, send to landing page
@@ -108,12 +112,15 @@ export default function (opt) {
     }
 
     debug("making new client with id %s", reqId);
-    const info = await manager.newClient(reqId);
+    try {
+      const info = await manager.newClient(reqId);
 
-    const url = schema + "://" + info.id + "." + ctx.request.host;
-    info.url = url;
-    ctx.body = info;
-    return;
+      info.url = schema + "://" + info.id + "." + ctx.request.host;
+      ctx.body = info;
+    } catch (err) {
+      ctx.status = 503;
+      ctx.body = {message: "Server capacity has been reached; Try again later"};
+    }
   });
 
   const server = http.createServer();
@@ -145,7 +152,7 @@ export default function (opt) {
     client.handleRequest(req, res);
   });
 
-  server.on("upgrade", (req, socket, head) => {
+  server.on("upgrade", (req, socket, _) => {
     const hostname = req.headers.host;
     if (!hostname) {
       socket.destroy();
