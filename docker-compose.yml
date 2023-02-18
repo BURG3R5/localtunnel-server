@@ -4,7 +4,9 @@ services:
   tunnelserver:
     build:
       context: .
+    environment:
+      - DEBUG=*
     container_name: "tunnelserver"
     network_mode: "host"
-    command: "--port ${MANAGER_PORT} --domain ${DOMAIN} --secure ${SECURE} --lower-port-limit ${LOWER_PORT_LIMIT} --upper-port-limit ${UPPER_PORT_LIMIT}"
+    command: "--config config.json"
     restart: "always"
