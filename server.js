@@ -2,7 +2,7 @@ import Koa from "koa";
 import tldjs from "tldjs";
 import Debug from "debug";
 import http from "http";
-import {hri} from "human-readable-ids";
+import { hri } from "human-readable-ids";
 import Router from "koa-router";
 
 import ClientManager from "./lib/ClientManager";
@@ -51,6 +51,27 @@ export default function (opt) {
     };
   });
 
+  router.get("/api/tunnels/:id/delete", async (ctx, _) => {
+    if (opt.allowDelete) {
+      const clientId = ctx.params.id;
+      const client = manager.getClient(clientId);
+      if (!client) {
+        ctx.throw(404);
+        return;
+      }
+
+      manager.removeClient(clientId);
+      ctx.body = {
+        delete_status: "success",
+      };
+    } else {
+      ctx.status = 401;
+      ctx.body = {
+        message: "this tunnelserver instance does not support deleting endpoints",
+      };
+    }
+  });
+
   app.use(router.routes());
   app.use(router.allowedMethods());
 
@@ -76,7 +97,9 @@ export default function (opt) {
         return;
       } catch (err) {
         ctx.status = 503;
-        ctx.body = {message: "Server capacity has been reached; Try again later"};
+        ctx.body = {
+          message: "Server capacity has been reached; Try again later",
+        };
         return;
       }
     }
@@ -119,7 +142,9 @@ export default function (opt) {
       ctx.body = info;
     } catch (err) {
       ctx.status = 503;
-      ctx.body = {message: "Server capacity has been reached; Try again later"};
+      ctx.body = {
+        message: "Server capacity has been reached; Try again later",
+      };
     }
   });
 
