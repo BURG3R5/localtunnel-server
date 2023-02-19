@@ -17,6 +17,10 @@ const argv = yargs
         default: false,
         describe: 'use this flag to indicate proxy over https'
     })
+    .options('allow-delete', {
+        default: false,
+        describe: 'use this flag to create endpoint that allows users to delete clients that may be accidentally open'
+    })
     .options('port', {
         default: '80',
         describe: 'listen on this port for outside requests'
@@ -53,6 +57,7 @@ const server = CreateServer({
     domain: argv.domain,
     lowerPortLimit: argv["lower-port-limit"],
     upperPortLimit: argv["upper-port-limit"],
+    allowDelete: argv["allow-delete"],
 });
 
 server.listen(argv.port, argv.address, () => {
@@ -71,7 +76,7 @@ process.on('uncaughtException', (err) => {
     log.error(err);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason, _) => {
     log.error(reason);
 });
 
