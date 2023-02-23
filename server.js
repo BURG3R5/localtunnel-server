@@ -4,8 +4,13 @@ import Debug from "debug";
 import http from "http";
 import { hri } from "human-readable-ids";
 import Router from "koa-router";
+import serve from "koa-static";
+import mount from "koa-mount";
+import path from "path";
+import favicon from 'koa-favicon';
 
 import ClientManager from "./lib/ClientManager";
+import { landingPage, statusPage } from "./lib/Views";
 
 const debug = Debug("localtunnel:server");
 
@@ -14,7 +19,6 @@ export default function (opt) {
 
   const validHosts = opt.domain ? [opt.domain] : undefined;
   const myTldjs = tldjs.fromUserSettings({ validHosts });
-  const landingPage = opt.landing || "https://localtunnel.github.io/www/";
 
   function GetClientIdFromHostname(hostname) {
     return myTldjs.getSubdomain(hostname);
@@ -28,13 +32,7 @@ export default function (opt) {
   const router = new Router();
 
   router.get("/api/status", async (ctx, _) => {
-    const stats = manager.stats;
-
-    ctx.body = {
-      idsUsed: stats.idsUsed,
-      portsEngaged: stats.portsEngaged,
-      mem: process.memoryUsage(),
-    };
+    ctx.body = statusPage(manager.stats);
   });
 
   router.get("/api/tunnels/:id/status", async (ctx, _) => {
@@ -67,13 +65,16 @@ export default function (opt) {
     } else {
       ctx.status = 401;
       ctx.body = {
-        message: "this tunnelserver instance does not support deleting endpoints",
+        message:
+          "this tunnelserver instance does not support deleting endpoints",
       };
     }
   });
 
   app.use(router.routes());
   app.use(router.allowedMethods());
+  app.use(mount("/public", serve(path.join(__dirname, "/static"))));
+  app.use(favicon(__dirname + '/static/favicon.ico'));
 
   // root endpoint
   app.use(async (ctx, next) => {
@@ -105,7 +106,7 @@ export default function (opt) {
     }
 
     // no new client request, send to landing page
-    ctx.redirect(landingPage);
+    ctx.body = landingPage();
   });
 
   // anything after the / path is a request for a specific client name
