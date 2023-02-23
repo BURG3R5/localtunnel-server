@@ -7,6 +7,7 @@ import Router from "koa-router";
 import serve from "koa-static";
 import mount from "koa-mount";
 import path from "path";
+import favicon from 'koa-favicon';
 
 import ClientManager from "./lib/ClientManager";
 import { landingPage, statusPage } from "./lib/Views";
@@ -73,6 +74,7 @@ export default function (opt) {
   app.use(router.routes());
   app.use(router.allowedMethods());
   app.use(mount("/public", serve(path.join(__dirname, "/static"))));
+  app.use(favicon(__dirname + '/static/favicon.ico'));
 
   // root endpoint
   app.use(async (ctx, next) => {
