@@ -9,8 +9,8 @@ import mount from "koa-mount";
 import path from "path";
 import favicon from 'koa-favicon';
 
-import ClientManager from "./lib/ClientManager";
-import { landingPage, statusPage } from "./lib/Views";
+import ClientManager from "./lib/ClientManager.js";
+import { landingPage, statusPage } from "./lib/Views.js";
 
 const debug = Debug("localtunnel:server");
 
