@@ -8,4 +8,4 @@ RUN npm install --production
 
 COPY . /app
 
-ENTRYPOINT ["node", "-r", "esm", "./bin/server"]
+ENTRYPOINT ["node", "--experimental-modules", "./bin/server.mjs"]

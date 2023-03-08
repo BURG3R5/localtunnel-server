@@ -1,4 +1,4 @@
-#!/usr/bin/env node -r esm
+#!/usr/bin/env node --experimental-modules
 
 import 'localenv';
 import yargs from 'yargs';
@@ -10,7 +10,7 @@ import CreateServer from '../server.js';
 
 const debug = Debug('localtunnel');
 
-const argv = yargs
+const argv = yargs(process.argv.slice(2))
     .usage('Usage: $0 --port [num]')
     .config()
     .options('secure', {
