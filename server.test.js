@@ -95,7 +95,7 @@ describe("Server", () => {
     const server = createServer({
       lowerPortLimit: 40004,
       upperPortLimit: 40006,
-  });
+    });
     await new Promise((resolve) => server.listen(resolve));
 
     // no such tunnel yet
