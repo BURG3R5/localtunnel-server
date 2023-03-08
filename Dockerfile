@@ -1,4 +1,4 @@
-FROM node:10.1.0-alpine
+FROM node:18.12.1-alpine
 
 WORKDIR /app
 
@@ -8,4 +8,4 @@ RUN npm install --production
 
 COPY . /app
 
-ENTRYPOINT ["node", "-r", "esm", "./bin/server"]
+ENTRYPOINT ["node", "--experimental-modules", "./bin/server.mjs"]

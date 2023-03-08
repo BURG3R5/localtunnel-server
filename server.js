@@ -7,15 +7,20 @@ import Router from "koa-router";
 import serve from "koa-static";
 import mount from "koa-mount";
 import path from "path";
-import favicon from 'koa-favicon';
+import favicon from "koa-favicon";
 
-import ClientManager from "./lib/ClientManager";
-import { landingPage, statusPage } from "./lib/Views";
+import ClientManager from "./lib/ClientManager.js";
+import { landingPage, statusPage } from "./lib/Views.js";
 
 const debug = Debug("localtunnel:server");
 
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 export default function (opt) {
-  opt = opt || {};
+  opt = opt || { lowerPortLimit: 40000, upperPortLimit: 40002 };
+
+  const __dirname = dirname(fileURLToPath(import.meta.url));
 
   const validHosts = opt.domain ? [opt.domain] : undefined;
   const myTldjs = tldjs.fromUserSettings({ validHosts });
@@ -74,7 +79,7 @@ export default function (opt) {
   app.use(router.routes());
   app.use(router.allowedMethods());
   app.use(mount("/public", serve(path.join(__dirname, "/static"))));
-  app.use(favicon(__dirname + '/static/favicon.ico'));
+  app.use(favicon(__dirname + "/static/favicon.ico"));
 
   // root endpoint
   app.use(async (ctx, next) => {
@@ -97,6 +102,7 @@ export default function (opt) {
         ctx.body = info;
         return;
       } catch (err) {
+        console.error(err);
         ctx.status = 503;
         ctx.body = {
           message: "Server capacity has been reached; Try again later",
@@ -142,6 +148,7 @@ export default function (opt) {
       info.url = schema + "://" + info.id + "." + ctx.request.host;
       ctx.body = info;
     } catch (err) {
+      console.error(err);
       ctx.status = 503;
       ctx.body = {
         message: "Server capacity has been reached; Try again later",
