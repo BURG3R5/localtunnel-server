@@ -1,12 +1,17 @@
 {
-  "author": "Roman Shtylman <shtylman@gmail.com>",
-  "name": "localtunnel-server",
-  "description": "expose localhost to the world",
-  "version": "0.0.8",
+  "name": "quicknexus",
+  "description": "expose your ports to the world",
+  "version": "0.0.1",
+  "author": "Aditya Rajput <adiraj20072002@gmail.com>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/localtunnel/server.git"
+  "contributors": [
+    "Aditya Rajput <adiraj20072002@gmail.com>",
+    "Roman Shtylman <shtylman@gmail.com>"
+  ],
+  "scripts": {
+    "start": "./bin/server.mjs --config config.json",
+    "test": "mocha --check-leaks ./**/*.test.js ./*.test.js",
+    "dev": "node-dev bin/server.mjs --config config.sample.json"
   },
   "dependencies": {
     "book": "^1.3.3",
@@ -28,10 +33,9 @@
     "supertest": "^6.3.3",
     "ws": "^8.12.1"
   },
-  "type": "module",
-  "scripts": {
-    "test": "mocha --check-leaks ./**/*.test.js",
-    "start": "./bin/server.mjs --config config.json",
-    "dev": "node-dev bin/server.mjs --config config.sample.json"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/BURG3R5/quicknexus.git"
+  },
+  "type": "module"
 }
