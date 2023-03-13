@@ -70,8 +70,7 @@ export default function (opt) {
     } else {
       ctx.status = 401;
       ctx.body = {
-        message:
-          "this quicknexus instance does not support deleting endpoints",
+        message: "this quicknexus instance does not support deleting endpoints",
       };
     }
   });
