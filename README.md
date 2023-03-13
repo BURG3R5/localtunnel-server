@@ -34,7 +34,7 @@ The quicknexus is now running and waiting for client requests on port 1234. You 
 You can now use your domain with the `--host` flag for the `quickportal`.
 
 ```shell
-tc --host http://tunnel.domain.tld:1234 --port 9000
+quip --host http://tunnel.domain.tld:1234 --port 9000
 ```
 
 You will be assigned a URL similar to `heavy-puma-9.tunnel.domain.tld:1234`.
