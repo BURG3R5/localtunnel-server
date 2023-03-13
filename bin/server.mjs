@@ -8,11 +8,12 @@ import Debug from "debug";
 
 import CreateServer from "../server.js";
 
-const debug = Debug("localtunnel");
+const debug = Debug("quicknexus");
 
 const argv = yargs(process.argv.slice(2))
   .usage("Usage: $0 --port [num]")
   .config()
+  .help()
   .options("secure", {
     default: false,
     describe: "use this flag to indicate proxy over https",
@@ -32,7 +33,7 @@ const argv = yargs(process.argv.slice(2))
   })
   .options("domain", {
     describe:
-      "Specify the base domain name. This is optional if hosting localtunnel from a regular example.com domain. This is required if hosting a localtunnel server from a subdomain (i.e. lt.example.dom where clients will be client-app.lt.example.come)",
+      "Specify the base domain name. This is optional if hosting quicknexus from a regular example.com domain. This is required if hosting a quicknexus from a subdomain (i.e. tunnel.domain.tld where clients will be client-app.tunnel.domain.tld)",
   })
   .options("lower-port-limit", {
     default: 40000,
@@ -47,11 +48,6 @@ const argv = yargs(process.argv.slice(2))
     describe:
       "maximum number of tcp sockets each client is allowed to establish at one time (the tunnels)",
   }).argv;
-
-if (argv.help) {
-  yargs.showHelp();
-  process.exit();
-}
 
 const server = CreateServer({
   max_tcp_sockets: argv["max-sockets"],
