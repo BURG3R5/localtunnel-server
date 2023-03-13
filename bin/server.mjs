@@ -8,7 +8,7 @@ import Debug from "debug";
 
 import CreateServer from "../server.js";
 
-const debug = Debug("localtunnel");
+const debug = Debug("quicknexus");
 
 const argv = yargs(process.argv.slice(2))
   .usage("Usage: $0 --port [num]")
@@ -32,7 +32,7 @@ const argv = yargs(process.argv.slice(2))
   })
   .options("domain", {
     describe:
-      "Specify the base domain name. This is optional if hosting localtunnel from a regular example.com domain. This is required if hosting a localtunnel server from a subdomain (i.e. lt.example.dom where clients will be client-app.lt.example.come)",
+      "Specify the base domain name. This is optional if hosting quicknexus from a regular example.com domain. This is required if hosting a quicknexus from a subdomain (i.e. tunnel.domain.tld where clients will be client-app.tunnel.domain.tld)",
   })
   .options("lower-port-limit", {
     default: 40000,

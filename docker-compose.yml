@@ -1,13 +1,13 @@
 version: "3"
 
 services:
-  tunnelserver:
+  quicknexus:
     build:
       context: .
     environment:
       - DEBUG=*
       - NODE_ENV=production
-    container_name: "tunnelserver"
+    container_name: "quicknexus"
     network_mode: "host"
     command: "--config config.json"
     restart: "always"

@@ -12,7 +12,7 @@ import favicon from "koa-favicon";
 import ClientManager from "./lib/ClientManager.js";
 import { landingPage, statusPage } from "./lib/Views.js";
 
-const debug = Debug("localtunnel:server");
+const debug = Debug("quicknexus");
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -71,7 +71,7 @@ export default function (opt) {
       ctx.status = 401;
       ctx.body = {
         message:
-          "this tunnelserver instance does not support deleting endpoints",
+          "this quicknexus instance does not support deleting endpoints",
       };
     }
   });
